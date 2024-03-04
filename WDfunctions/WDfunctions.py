@@ -68,7 +68,7 @@ def _make_MTR(ddir=None):
 
 def _make_MRage(ddir=None):
     if ddir is None:
-        ddir='../data/'
+        ddir='data/'
     files = glob.glob(ddir+'WDtracks/*.trk')
     files.sort()
     alldata = np.vstack(np.array([_get_MTR(f) for f in files]))
