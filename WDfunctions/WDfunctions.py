@@ -3,6 +3,7 @@ import numpy as np
 import glob
 import os
 from scipy.interpolate import griddata
+import pkg_resources
 
 
 
@@ -37,10 +38,10 @@ def _get_MTage(filename):
 
 def _make_MTR(ddir=None):
     if ddir is None:
-        ddir='../data/'
+        ddir = pkg_resources.resource_filename('WDfunctions', 'data/')
     files = glob.glob(ddir+'WDtracks/*.trk')
     files.sort()
-    alldata = np.vstack(np.array([_get_MTR(f) for f in files]))
+    alldata = np.vstack(np.array([_get_MTR(f) for f in files],dtype=object))
 
     def WD_MTR(M,logT):
         """ 
@@ -68,10 +69,10 @@ def _make_MTR(ddir=None):
 
 def _make_MRage(ddir=None):
     if ddir is None:
-        ddir='data/'
+        ddir='./data/'
     files = glob.glob(ddir+'WDtracks/*.trk')
     files.sort()
-    alldata = np.vstack(np.array([_get_MTR(f) for f in files]))
+    alldata = np.vstack(np.array([_get_MTR(f) for f in files],dtype=object))
 
     def WD_MTage(M,logT):
         """ 
