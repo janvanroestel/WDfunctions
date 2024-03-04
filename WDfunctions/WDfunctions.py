@@ -35,8 +35,10 @@ def _get_MTage(filename):
 
 
 
-def _make_MTR(ddir='/home/jan/Documents/Projects/ZTF/WD_EBpop/WDRD/LCfitting/fit_utils/'):
-    files = glob.glob(ddir+'/WDtracks/*.trk')
+def _make_MTR(ddir=None):
+    if ddir is None:
+        ddir='../data/'
+    files = glob.glob(ddir+'WDtracks/*.trk')
     files.sort()
     alldata = np.vstack(np.array([_get_MTR(f) for f in files]))
 
@@ -64,10 +66,34 @@ def _make_MTR(ddir='/home/jan/Documents/Projects/ZTF/WD_EBpop/WDRD/LCfitting/fit
 
 
 
-def _make_MRage(ddir='/home/jan/Documents/Projects/ZTF/WD_EBpop/WDRD/LCfitting/fit_utils/'):
-    files = glob.glob(ddir+'/WDtracks/*.trk')
+def _make_MRage(ddir=None):
+    if ddir is None:
+        ddir='../data/'
+    files = glob.glob(ddir+'WDtracks/*.trk')
     files.sort()
-    alldata = np.vstack(np.array([_get_MTage(f) for f in files]))
+    alldata = np.vstack(np.array([_get_MTR(f) for f in files]))
+
+    def WD_MTage(M,logT):
+        """ 
+        input:
+        M : float or array-like
+            the white dwarf mass in solar units
+        logT : float or array-like
+            the white dwarf temperature in log10(Kelvin)
+
+        output:
+        age : float or array-like
+            the white dwarf age in Gyr
+        """
+        if (isinstance(M,float) or isinstance(M,int)) and (isinstance(logT,float) or isinstance(logT,int)):
+            input_values = np.array([M,logT])
+        else:
+            # assuming they are arrays
+            M = np.array(M,dtype=np.float)
+            logT = np.array(logT,dtype=np.float)
+            input_values = np.c_[M,logT]
+        return griddata(alldata[:,:2],alldata[:,2],input_values,method='cubic')
+    return WD_MTage
 
     f = lambda pos : griddata(alldata[:,:2],alldata[:,2],pos,method='cubic')
 
