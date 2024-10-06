@@ -49,7 +49,7 @@ def calc_R(M,logg):
 class WDSED():
     "Class that returns WD magnitudes"
 
-    def __init__(self,Table):
+    def __init__(self,WDtype='DA'):
         """ Load a table from 
             http://www.astro.umontreal.ca/~bergeron/CoolingModels/ as input
         """
@@ -57,7 +57,10 @@ class WDSED():
         # replace 'log g' with 'logg' in header
 
         # load the data
-        table_path = ddir = pkg_resources.resource_filename('WDfunctions', 'data/Table_DA.txt')
+        if WDtype=='DA':
+            table_path = pkg_resources.resource_filename('WDfunctions', 'data/Table_DA.txt')
+        elif WDtype=='DB':
+            table_path = pkg_resources.resource_filename('WDfunctions', 'data/Table_DB.txt')
         self.data = np.genfromtxt(table_path,skip_header=1,names=True)
     
         # make the interpolation functions for each filter
@@ -112,6 +115,14 @@ class WDSED():
         else:
             print('Error; provide only logg OR M and R')
 
+        if logg<7.0 or logg>9.0:
+            print('Warning: logg (%.2f) is out of bounds, returning extrapolated values' %logg)
+            if logg<7.0:
+                logg = 7.0
+            if logg<9.0:
+                logg = 9.0
+
+        # get the magnitudes
         output = [self._interpolators[f]([T,logg]) for f in filters]
         output = np.atleast_2d(np.array(output))
 
@@ -120,7 +131,6 @@ class WDSED():
             M_model = self.model_mass([T,logg])
             R_model = calc_R(M_model,logg)
             radius_mag = -2.5*np.log10((R/R_model)**2)
-            print(radius_mag)
             output += radius_mag    
         
         # set to the right distance
