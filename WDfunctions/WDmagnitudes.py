@@ -106,7 +106,24 @@ class WDSED():
                         method='linear')
         return output
 
-    def get_magnitudes(self,filters,T,M=None,R=None,logg=None,distance=10.):
+    def get_magnitudes(self,filters,T,M=None,R=None,logg=None,distance=10.,Egr=0):
+        """ Get the magnitudes from the table """
+        
+        # the extinction coefficients
+        # see https://arxiv.org/pdf/2210.15918
+        Ra = dict()
+        Ra['FUV'] = 4.89
+        Ra['NUV'] = 7.24
+        Ra['PSg'] = 3.518
+        Ra['PSr'] = 2.617
+        Ra['PSi'] = 1.971
+        Ra['PSz'] = 1.549
+        Ra['PSy'] = 1.263
+        Ra['SDSSu'] = 4.5
+        Ra['SDSSg'] = 3.452
+        Ra['SDSSr'] = 2.400
+        Ra['SDSSi'] = 1.799
+        Ra['SDSSz'] = 1.299
     
         if logg is None and M is not None and R is not None:
             logg = calc_logg(M,R)
@@ -136,6 +153,9 @@ class WDSED():
         # set to the right distance
         mu = 5*np.log10(distance)-5 
         output += mu
+
+        # add dust extinction
+        output += Egr*np.array([Ra[f] for f in filters])
 
         return output
         
