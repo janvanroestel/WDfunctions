@@ -15,7 +15,7 @@ def _get_MTR(filename):
 
     log10T = data[:,0]
     R = data[:,4]
-    M = float(os.path.basename(filename)[:3]) * np.ones_like(R)
+    M = float(os.path.basename(filename).replace('Msun.trk','')) * np.ones_like(R)
     
     return np.c_[M,log10T,R]
 
