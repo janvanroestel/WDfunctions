@@ -59,8 +59,8 @@ def _make_MTR(ddir=None):
             input_values = np.array([M,logT])
         else:
             # assuming they are arrays
-            M = np.array(M,dtype=np.float)
-            logT = np.array(logT,dtype=np.float)
+            M = np.array(M,dtype=float)
+            logT = np.array(logT,dtype=float)
             input_values = np.c_[M,logT]
         return griddata(alldata[:,:2],alldata[:,2],input_values,method='cubic')
     return WD_MTR
@@ -90,8 +90,8 @@ def _make_MRage(ddir=None):
             input_values = np.array([M,logT])
         else:
             # assuming they are arrays
-            M = np.array(M,dtype=np.float)
-            logT = np.array(logT,dtype=np.float)
+            M = np.array(M,dtype=float)
+            logT = np.array(logT,dtype=float)
             input_values = np.c_[M,logT]
         return griddata(alldata[:,:2],alldata[:,2],input_values,method='cubic')
     return WD_MTage
