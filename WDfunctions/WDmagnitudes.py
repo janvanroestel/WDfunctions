@@ -133,7 +133,7 @@ class WDSED():
             print('Error; provide only logg OR M and R')
 
         if logg<7.0 or logg>9.0:
-            print('Warning: logg (%.2f) is out of bounds, returning extrapolated values' %logg)
+            print('WARNING: logg (%.2f) is out of bounds, returning extrapolated values!!!' %logg)
             if logg<7.0:
                 logg = 7.0
             if logg<9.0:

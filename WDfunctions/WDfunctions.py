@@ -67,7 +67,7 @@ def _make_MTR(ddir=None):
 
 
 
-def _make_MRage(ddir=None):
+def _make_MTage(ddir=None):
     if ddir is None:
         ddir='./data/'
     files = glob.glob(ddir+'WDtracks/*.trk')
@@ -159,3 +159,4 @@ def WD_MR_Nauenberg(M,mu=2.001833):
     
 # run some functions to make them on import
 WD_MTR = _make_MTR()
+WD_MTage = _make_MTage()
